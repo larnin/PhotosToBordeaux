@@ -413,6 +413,8 @@ GameObject:
   - component: {fileID: 282840814}
   - component: {fileID: 282840813}
   - component: {fileID: 282840811}
+  - component: {fileID: 282840812}
+  - component: {fileID: 282840815}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -427,6 +429,25 @@ AudioListener:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_Enabled: 1
+--- !u!114 &282840812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 282840810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06afdc517487f8d49b6c7516553be174, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_updateType: 0
+  m_inverseVerticalAxis: 1
+  m_mouseSensibility: 1.5
+  m_clampVerticalRotationTop: 85
+  m_clampVerticalRotationBottom: -85
+  m_startSpeedRotationDecreaseDistance: 20
+  m_powMoveSpeed: 1.5
+  m_cameraRotSpeed: 10
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
@@ -476,6 +497,19 @@ Transform:
   m_Father: {fileID: 629613702}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &282840815
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 282840810}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.59
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &420815251 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4547305626346902, guid: cd5f97f137992a94696a11bc5724f4d9,
