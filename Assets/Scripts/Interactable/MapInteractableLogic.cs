@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+public class MapInteractableLogic : BaseInteractableLogic
+{
+    SubscriberList m_subscriberList = new SubscriberList();
+    bool m_canInteract = true;
+    bool m_cameraActive = false;
+
+    private void Awake()
+    {
+        m_subscriberList.Add(new Event<MapEndEvent>.Subscriber(onMapEnd));
+        m_subscriberList.Add(new Event<CameraStartEvent>.Subscriber(onCameraStart));
+        m_subscriberList.Add(new Event<CameraEndEvent>.Subscriber(onCameraEnd));
+        m_subscriberList.Subscribe();
+    }
+
+    private void OnDestroy()
+    {
+        m_subscriberList.Unsubscribe();
+    }
+
+    public override string interactiontName { get { return "Carte"; } }
+    public override bool isInteractable { get { return m_canInteract && !m_cameraActive; } }
+
+    public override void onHoverEnd()
+    {
+
+    }
+
+    public override void onHoverStart()
+    {
+
+    }
+
+    public override void onInteraction()
+    {
+        Event<MapStartEvent>.Broadcast(new MapStartEvent());
+        m_canInteract = false;
+    }
+
+    void onMapEnd(MapEndEvent e)
+    {
+        m_canInteract = true;
+    }
+
+    void onCameraStart(CameraStartEvent e)
+    {
+        m_cameraActive = true;
+    }
+    
+    void onCameraEnd(CameraEndEvent e)
+    {
+        m_cameraActive = false;
+    }
+}
