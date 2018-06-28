@@ -65,9 +65,4 @@ public class ButtonManagerLogic : MonoBehaviour
 
         selectNextDelay();
     }
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 10, 200, 20), "delay " + m_delayToNext);
-    }
 }

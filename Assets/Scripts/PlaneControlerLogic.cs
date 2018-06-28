@@ -22,6 +22,8 @@ class PlaneControlerLogic : MonoBehaviour
 
     [SerializeField] float m_accelerationTime = 1;
 
+    SubscriberList m_subscriberList = new SubscriberList();
+
     Vector3 m_angle = Vector3.zero;
 
     float m_leftPressTime = 0;
@@ -37,6 +39,14 @@ class PlaneControlerLogic : MonoBehaviour
     private void Awake()
     {
         m_angle = transform.rotation.eulerAngles;
+
+        m_subscriberList.Add(new Event<GenerationFinishedEvent>.Subscriber(onGenerationEnd));
+        m_subscriberList.Subscribe();
+    }
+
+    private void OnDestroy()
+    {
+        m_subscriberList.Unsubscribe();
     }
 
     private void Update()
@@ -106,5 +116,15 @@ class PlaneControlerLogic : MonoBehaviour
         m_rightPressTime = lambdaPressTime(m_rightPressTime, m_right);
         m_upPressTime = lambdaPressTime(m_upPressTime, m_up);
         m_downPressTime = lambdaPressTime(m_downPressTime, m_down);
+    }
+
+    void onGenerationEnd(GenerationFinishedEvent e)
+    {
+        m_angle.y = LevelMap.instance.startRotation;
+        var map = GameObject.Find("GameMap");
+        Debug.Log(map.transform.localScale);
+        transform.position = new Vector3(LevelMap.instance.startPos.x * 2 * map.transform.localScale.x, transform.position.y, LevelMap.instance.startPos.y * 2 * map.transform.localScale.z);
+
+        Debug.Log(LevelMap.instance.startPos);
     }
 }

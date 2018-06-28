@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
@@ -873,6 +873,21 @@ Prefab:
     - target: {fileID: 1472276101723282, guid: a0274a0ec0d26b147886745e4a3885fd, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114982789784766640, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_minHeight
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114982789784766640, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_maxHeight
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: far clip plane
+      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0274a0ec0d26b147886745e4a3885fd, type: 2}
@@ -2783,8 +2798,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_properties:
     zoneParent: {fileID: 2144326687}
-    width: 20
-    height: 20
+    width: 100
+    height: 100
     perlinElevationScale: 0.05
     perlinElevationScale2: 0.15
     perlinElevationScale3: 0.01
@@ -2800,6 +2815,9 @@ MonoBehaviour:
     perlinSandScale: 0.015
     sandMaxHeight: 0
     sandValue: 0.2
+    importantPointCount: 5
+    maxImportantPointsTry: 10000
+    minImportantPointDistance: 3
   m_biomes:
     m_seaTiles:
       m_fullObj:
@@ -2856,6 +2874,24 @@ MonoBehaviour:
       - {fileID: 1778394349329160, guid: 3c585e209bd8f4e40be86edac35526fd, type: 2}
       m_interCornerObj:
       - {fileID: 1421873693228456, guid: 6f758cf7a8bb49e4fa0728c3b46c3210, type: 2}
+  m_importantPoints:
+  - name: SeaBloc
+    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+    biome: 0
+  - name: WaterSponge
+    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+    biome: 1
+  - name: SandObject
+    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+    biome: 2
+  - name: LandBloc
+    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+    biome: 3
+  - name: ForestWhiteBloc
+    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+    biome: 4
+  m_bordeauxPrefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce,
+    type: 2}
 --- !u!4 &1763878021
 Transform:
   m_ObjectHideFlags: 0
@@ -3368,7 +3404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2144326687}
   m_Layer: 0
-  m_Name: Map
+  m_Name: GameMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3382,7 +3418,7 @@ Transform:
   m_GameObject: {fileID: 2144326686}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 3.7013056}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3

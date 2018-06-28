@@ -6,15 +6,6 @@ using NRand;
 
 public class GeneratorLogic : MonoBehaviour
 {
-    enum Biome
-    {
-        Sea = 0,
-        Water = 1,
-        Sand = 2,
-        Land = 3,
-        Forest = 4
-    }
-
     enum TileType
     {
         Full = 0,
@@ -91,6 +82,14 @@ public class GeneratorLogic : MonoBehaviour
     }
 
     [Serializable]
+    class ImportantPoint
+    {
+        public string name;
+        public GameObject prefab;
+        public Biome biome;
+    }
+
+    [Serializable]
     class GeneratorProperties
     {
         public Transform zoneParent;
@@ -111,16 +110,22 @@ public class GeneratorLogic : MonoBehaviour
         public float perlinSandScale;
         public float sandMaxHeight;
         public float sandValue;
+        public int importantPointCount;
+        public int maxImportantPointsTry;
+        public float minImportantPointDistance;
     }
 
     const float perlinRange = 1000000;
 
     [SerializeField] GeneratorProperties m_properties;
     [SerializeField] Biomes m_biomes;
+    [SerializeField] List<ImportantPoint> m_importantPoints;
+    [SerializeField] GameObject m_bordeauxPrefab;
 
     void Start()
     {
         generate((uint)new StaticRandomGenerator<DefaultRandomGenerator>().Next());
+        Event<GenerationFinishedEvent>.Broadcast(new GenerationFinishedEvent());
     }
     
     void generate(uint seed)
@@ -131,6 +136,12 @@ public class GeneratorLogic : MonoBehaviour
         var tiles = generateBiomes(elevation, generator);
 
         draw(tiles, generator);
+
+        LevelMap.instance.tiles = tiles;
+
+        placeImportantPoints(generator);
+        placeBordeaux(generator);
+        placeSpawnPoint();
     }
 
     Vector2 generateOffset(float range, IRandomGenerator gen)
@@ -235,5 +246,144 @@ public class GeneratorLogic : MonoBehaviour
         var obj = Instantiate(prefab, m_properties.zoneParent);
         obj.transform.localPosition = new Vector3(2*x, 0, 2*y);
         obj.transform.Rotate(new Vector3(0, rot));
+    }
+
+    void placeImportantPoints(IRandomGenerator gen)
+    {
+        var tiles = LevelMap.instance.tiles;
+        LevelMap.instance.importantPoints.Clear();
+
+        var dx = new UniformIntDistribution(2, m_properties.width - 3);
+        var dy = new UniformIntDistribution(2, m_properties.height - 3);
+        var dPoint = new UniformIntDistribution(m_importantPoints.Count - 1);
+        var dRot = new UniformIntDistribution(3);
+        
+        for(int i = 0; i < m_properties.importantPointCount; i++)
+        {
+            for(int j = 0; j < m_properties.maxImportantPointsTry; j++)
+            {
+                var x = dx.Next(gen);
+                var y = dy.Next(gen);
+                bool ok = true;
+                foreach(var p in LevelMap.instance.importantPoints)
+                {
+                    if (new Vector2(x - p.x, y - p.y).magnitude > m_properties.minImportantPointDistance)
+                        continue;
+
+                    ok = false;
+                    break;
+                }
+                if (!ok)
+                    continue;
+
+                var localMap = tiles.getLocal(x, y);
+                if (localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 1) ||
+                   localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 1) ||
+                   localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 1))
+                    continue;
+
+                var point = m_importantPoints[dPoint.Next(gen)];
+                if (point.biome != localMap.get(0, 0))
+                    continue;
+
+                var obj = Instantiate(point.prefab, m_properties.zoneParent);
+                obj.transform.localPosition = new Vector3(2 * x, 0, 2 * y);
+                obj.transform.localRotation = Quaternion.Euler(0, dRot.Next(gen) * 90, 0);
+
+                ImportantPointInfos iP = new ImportantPointInfos();
+                iP.x = x;
+                iP.y = y;
+                iP.name = point.name;
+                LevelMap.instance.importantPoints.Add(iP);
+
+                break;
+            }
+        }
+    }
+
+    void placeBordeaux(IRandomGenerator gen)
+    {
+        var tiles = LevelMap.instance.tiles;
+
+        var dx = new UniformIntDistribution(2, m_properties.width - 3);
+        var dy = new UniformIntDistribution(2, m_properties.height - 3);
+        var dRot = new UniformIntDistribution(3);
+
+        bool bdxSet = false;
+        for (int j = 0; j < m_properties.maxImportantPointsTry; j++)
+        {
+            var x = dx.Next(gen);
+            var y = dy.Next(gen);
+            bool ok = true;
+            foreach (var p in LevelMap.instance.importantPoints)
+            {
+                if (new Vector2(x - p.x, y - p.y).magnitude > m_properties.minImportantPointDistance)
+                    continue;
+
+                ok = false;
+                break;
+            }
+            if (!ok)
+                continue;
+
+            var localMap = tiles.getLocal(x, y);
+            if (localMap.get(0, 0) != localMap.get(0, 1) || localMap.get(0, 0) != localMap.get(0, 2) ||
+                localMap.get(0, 0) != localMap.get(1, 0) || localMap.get(0, 0) != localMap.get(1, 1) || localMap.get(1, 2) != localMap.get(0, 1) ||
+                localMap.get(0, 0) != localMap.get(2, 0) || localMap.get(0, 0) != localMap.get(2, 1) || localMap.get(2, 2) != localMap.get(0, 1))
+                continue;
+            
+            if (localMap.get(0, 0) != Biome.Land)
+                continue;
+
+            var obj = Instantiate(m_bordeauxPrefab, m_properties.zoneParent);
+            obj.transform.localPosition = new Vector3(2 * x, 0, 2 * y);
+            obj.transform.localRotation = Quaternion.Euler(0, dRot.Next(gen) * 90, 0);
+
+            ImportantPointInfos iP = new ImportantPointInfos();
+            iP.x = x;
+            iP.y = y;
+            iP.name = "bordeaux";
+            LevelMap.instance.bordeaux = iP;
+            bdxSet = true;
+
+            break;
+        }
+
+        if(!bdxSet)
+        {
+            var x = dx.Next(gen);
+            var y = dy.Next(gen);
+
+            var obj = Instantiate(m_bordeauxPrefab, m_properties.zoneParent);
+            obj.transform.localPosition = new Vector3(2 * x, 0, 2 * y);
+            obj.transform.localRotation = Quaternion.Euler(0, dRot.Next(gen) * 90, 0);
+
+            ImportantPointInfos iP = new ImportantPointInfos();
+            iP.x = x;
+            iP.y = y;
+            iP.name = "bordeaux";
+            LevelMap.instance.bordeaux = iP;
+        }
+    }
+
+    void placeSpawnPoint()
+    {
+        const float offset = 3;
+        Vector2[] points = new Vector2[] 
+        { new Vector2(3, 3)
+        , new Vector2(offset, m_properties.height - offset - 1)
+        , new Vector2(m_properties.width - offset - 1, offset)
+        , new Vector2(m_properties.width - offset - 1, m_properties.height - offset - 1)};
+
+        var bestPos = new Vector2(LevelMap.instance.bordeaux.x, LevelMap.instance.bordeaux.y);
+        var bdxPos = bestPos;
+        foreach(var p in points)
+            if ((bestPos - bdxPos).sqrMagnitude < (p - bdxPos).sqrMagnitude)
+                bestPos = p;
+
+        LevelMap.instance.startPos = bestPos;
+
+        Vector2 dir = new Vector2(m_properties.width / 2, m_properties.height / 2) - bestPos;
+        LevelMap.instance.startRotation = - Vector2.SignedAngle(new Vector2(0, 1), dir);
     }
 }

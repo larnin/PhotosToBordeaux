@@ -108,7 +108,7 @@ public class ButtonInteractableLogic : BaseInteractableLogic
 
     void onEndTimer()
     {
-
+        Event<ButtonTimeoutEvent>.Broadcast(new ButtonTimeoutEvent());
     }
 
     public override string interactiontName { get { return m_bigButton ? "Big fat bouton" : "Bouton"; } }
