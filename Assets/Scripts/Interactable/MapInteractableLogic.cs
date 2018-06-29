@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 public class MapInteractableLogic : BaseInteractableLogic
 {
     SubscriberList m_subscriberList = new SubscriberList();
     bool m_canInteract = true;
     bool m_cameraActive = false;
+    AudioSource m_source;
 
     private void Awake()
     {
@@ -15,6 +17,8 @@ public class MapInteractableLogic : BaseInteractableLogic
         m_subscriberList.Add(new Event<CameraStartEvent>.Subscriber(onCameraStart));
         m_subscriberList.Add(new Event<CameraEndEvent>.Subscriber(onCameraEnd));
         m_subscriberList.Subscribe();
+
+        m_source = GetComponent<AudioSource>();
     }
 
     private void OnDestroy()
@@ -39,11 +43,13 @@ public class MapInteractableLogic : BaseInteractableLogic
     {
         Event<MapStartEvent>.Broadcast(new MapStartEvent());
         m_canInteract = false;
+        m_source.Play();
     }
 
     void onMapEnd(MapEndEvent e)
     {
         m_canInteract = true;
+        m_source.Play();
     }
 
     void onCameraStart(CameraStartEvent e)

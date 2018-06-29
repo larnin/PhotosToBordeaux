@@ -13,6 +13,8 @@ public class ButtonInteractableLogic : BaseInteractableLogic
     const float blinkTime = 1.0f;
 
     [SerializeField] bool m_bigButton = false;
+    [SerializeField] AudioClip m_alarmClip;
+    [SerializeField] AudioClip m_clickClip;
 
     bool m_cameraActive = false;
     bool m_enabled = false;
@@ -23,6 +25,7 @@ public class ButtonInteractableLogic : BaseInteractableLogic
     GameObject m_redButton;
     GameObject m_pressedButton;
     Light m_light;
+    AudioSource m_source;
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class ButtonInteractableLogic : BaseInteractableLogic
         m_redButton = transform.Find("boutonlight").gameObject;
         m_pressedButton = transform.Find("boutonpressed").gameObject;
         m_light = transform.Find("Point Light").GetComponent<Light>();
+        m_source = GetComponent<AudioSource>();
 
         setState(LightState.Off);
     }
@@ -95,6 +99,8 @@ public class ButtonInteractableLogic : BaseInteractableLogic
                 m_offButton.SetActive(false);
                 m_light.gameObject.SetActive(true);
                 m_light.color = pressedColor;
+                m_source.clip = m_clickClip;
+                m_source.Play();
                 break;
             case LightState.Red:
                 m_pressedButton.SetActive(false);
@@ -102,6 +108,8 @@ public class ButtonInteractableLogic : BaseInteractableLogic
                 m_offButton.SetActive(false);
                 m_light.gameObject.SetActive(true);
                 m_light.color = lightColor;
+                m_source.clip = m_alarmClip;
+                m_source.Play();
                 break;
         }
     }

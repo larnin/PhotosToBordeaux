@@ -33,6 +33,7 @@ public class CameraLogic : MonoBehaviour
     SubscriberList m_subscriberList = new SubscriberList();
     Transform map;
     int m_photoCount;
+    AudioSource m_source;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class CameraLogic : MonoBehaviour
         gameObject.SetActive(false);
         m_flashSurface.SetActive(false);
         map = GameObject.Find("GameMap").GetComponent<Transform>();
+        m_source = GetComponent<AudioSource>();
 
         photos.Clear();
         maxPhotoCount = m_maxPhotoCount;
@@ -67,6 +69,7 @@ public class CameraLogic : MonoBehaviour
         if (!gameObject.activeSelf || m_photoCount >= m_maxPhotoCount)
             return;
 
+        m_source.Play();
         m_flashSurface.SetActive(true);
         DOVirtual.DelayedCall(m_flashDuration, () => m_flashSurface.SetActive(false));
 
