@@ -115,12 +115,42 @@ public class GeneratorLogic : MonoBehaviour
         public float minImportantPointDistance;
     }
 
+    [Serializable]
+    class Colors
+    {
+        public Color seaColor;
+        public Color waterColor;
+        public Color sandColor;
+        public Color landColor;
+        public Color forestColor;
+
+        public Color colorOf(Biome b)
+        {
+            switch (b)
+            {
+                case Biome.Sea:
+                    return seaColor;
+                case Biome.Water:
+                    return waterColor;
+                case Biome.Sand:
+                    return sandColor;
+                case Biome.Land:
+                    return landColor;
+                case Biome.Forest:
+                    return forestColor;
+                default:
+                    return seaColor;
+            }
+        }
+    }
+
     const float perlinRange = 1000000;
 
     [SerializeField] GeneratorProperties m_properties;
     [SerializeField] Biomes m_biomes;
     [SerializeField] List<ImportantPoint> m_importantPoints;
     [SerializeField] GameObject m_bordeauxPrefab;
+    [SerializeField] Colors m_colors;
 
     void Start()
     {
@@ -142,6 +172,7 @@ public class GeneratorLogic : MonoBehaviour
         placeImportantPoints(generator);
         placeBordeaux(generator);
         placeSpawnPoint();
+        createMinimap();
     }
 
     Vector2 generateOffset(float range, IRandomGenerator gen)
@@ -342,7 +373,7 @@ public class GeneratorLogic : MonoBehaviour
             ImportantPointInfos iP = new ImportantPointInfos();
             iP.x = x;
             iP.y = y;
-            iP.name = "bordeaux";
+            iP.name = "Bordeaux";
             LevelMap.instance.bordeaux = iP;
             bdxSet = true;
 
@@ -385,5 +416,17 @@ public class GeneratorLogic : MonoBehaviour
 
         Vector2 dir = new Vector2(m_properties.width / 2, m_properties.height / 2) - bestPos;
         LevelMap.instance.startRotation = - Vector2.SignedAngle(new Vector2(0, 1), dir);
+    }
+
+    void createMinimap()
+    {
+        Texture2D pic = new Texture2D(m_properties.width, m_properties.height, TextureFormat.RGB24, false);
+        var tiles = LevelMap.instance.tiles;
+        for (int i = 0; i < m_properties.width; i++)
+            for (int j = 0; j < m_properties.height; j++)
+                pic.SetPixel(i, j, m_colors.colorOf(tiles.get(i, j)));
+        pic.filterMode = FilterMode.Point;
+        pic.Apply();
+        LevelMap.instance.minimap = pic;
     }
 }

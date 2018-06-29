@@ -38,4 +38,5 @@ public class LevelMap
     public ImportantPointInfos bordeaux = new ImportantPointInfos();
     public Vector2 startPos;
     public float startRotation;
+    public Texture2D minimap;
 }

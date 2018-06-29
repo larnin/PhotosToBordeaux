@@ -122,9 +122,6 @@ class PlaneControlerLogic : MonoBehaviour
     {
         m_angle.y = LevelMap.instance.startRotation;
         var map = GameObject.Find("GameMap");
-        Debug.Log(map.transform.localScale);
         transform.position = new Vector3(LevelMap.instance.startPos.x * 2 * map.transform.localScale.x, transform.position.y, LevelMap.instance.startPos.y * 2 * map.transform.localScale.z);
-
-        Debug.Log(LevelMap.instance.startPos);
     }
 }
