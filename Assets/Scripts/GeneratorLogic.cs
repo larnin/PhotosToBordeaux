@@ -154,7 +154,7 @@ public class GeneratorLogic : MonoBehaviour
 
     void Start()
     {
-        generate((uint)new StaticRandomGenerator<DefaultRandomGenerator>().Next());
+        generate((uint)LevelMap.instance.seed);
         Event<GenerationFinishedEvent>.Broadcast(new GenerationFinishedEvent());
     }
     

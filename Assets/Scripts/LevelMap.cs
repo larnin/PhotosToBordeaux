@@ -39,4 +39,6 @@ public class LevelMap
     public Vector2 startPos;
     public float startRotation;
     public Texture2D minimap;
+    public float time;
+    public int seed;
 }

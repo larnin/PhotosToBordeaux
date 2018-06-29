@@ -13,7 +13,8 @@ public class CameraLogic : MonoBehaviour
         public Texture2D photo;
     }
 
-    public static List<PhotoInfos> m_photos = new List<PhotoInfos>();
+    public static List<PhotoInfos> photos = new List<PhotoInfos>();
+    public static int maxPhotoCount;
 
     const string photoKey = "Fire1";
     const string fovKey = "Mouse ScrollWheel";
@@ -43,7 +44,8 @@ public class CameraLogic : MonoBehaviour
         m_flashSurface.SetActive(false);
         map = GameObject.Find("GameMap").GetComponent<Transform>();
 
-        m_photos.Clear();
+        photos.Clear();
+        maxPhotoCount = m_maxPhotoCount;
     }
 
     private void OnDestroy()
@@ -62,7 +64,7 @@ public class CameraLogic : MonoBehaviour
 
     void takePhoto()
     {
-        if (!gameObject.activeSelf || m_photoCount > m_maxPhotoCount)
+        if (!gameObject.activeSelf || m_photoCount >= m_maxPhotoCount)
             return;
 
         m_flashSurface.SetActive(true);
@@ -86,7 +88,7 @@ public class CameraLogic : MonoBehaviour
         infos.photo = pic;
         infos.pos = getPhotoLocation();
 
-        m_photos.Add(infos);
+        photos.Add(infos);
 
         m_photoCount++;
 
