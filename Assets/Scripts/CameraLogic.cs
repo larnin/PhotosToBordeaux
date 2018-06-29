@@ -7,7 +7,13 @@ using DG.Tweening;
 
 public class CameraLogic : MonoBehaviour
 {
-    static List<Texture2D> m_photos = new List<Texture2D>();
+    public class PhotoInfos
+    {
+        public Vector2 pos;
+        public Texture2D photo;
+    }
+
+    public static List<PhotoInfos> m_photos = new List<PhotoInfos>();
 
     const string photoKey = "Fire1";
     const string fovKey = "Mouse ScrollWheel";
@@ -20,8 +26,12 @@ public class CameraLogic : MonoBehaviour
     [SerializeField] float m_maxFOV = 20;
     [SerializeField] float m_FOVStep = 2;
     [SerializeField] float m_FOVStepTime = 0.2f;
+    [SerializeField] float m_maxPhotoDistance = 100;
+    [SerializeField] int m_maxPhotoCount = 24;
 
     SubscriberList m_subscriberList = new SubscriberList();
+    Transform map;
+    int m_photoCount;
 
     private void Awake()
     {
@@ -31,6 +41,7 @@ public class CameraLogic : MonoBehaviour
 
         gameObject.SetActive(false);
         m_flashSurface.SetActive(false);
+        map = GameObject.Find("GameMap").GetComponent<Transform>();
 
         m_photos.Clear();
     }
@@ -51,14 +62,14 @@ public class CameraLogic : MonoBehaviour
 
     void takePhoto()
     {
-        if (!gameObject.activeSelf)
+        if (!gameObject.activeSelf || m_photoCount > m_maxPhotoCount)
             return;
 
         m_flashSurface.SetActive(true);
         DOVirtual.DelayedCall(m_flashDuration, () => m_flashSurface.SetActive(false));
 
-        const int width = 320;
-        const int height = 180;
+        const int width = 640;
+        const int height = 360;
 
         RenderTexture rt = new RenderTexture(width, height, 24);
         m_camera.targetTexture = rt;
@@ -71,7 +82,15 @@ public class CameraLogic : MonoBehaviour
         RenderTexture.active = null;
         Destroy(rt);
 
-        m_photos.Add(pic);
+        PhotoInfos infos = new PhotoInfos();
+        infos.photo = pic;
+        infos.pos = getPhotoLocation();
+
+        m_photos.Add(infos);
+
+        m_photoCount++;
+
+        Event<PhotoTakenEvent>.Broadcast(new PhotoTakenEvent(pic, m_photoCount, m_maxPhotoCount));
     }
 
     void onCameraStart(CameraStartEvent e)
@@ -96,5 +115,20 @@ public class CameraLogic : MonoBehaviour
         float target = m_camera.fieldOfView + stepCount * m_FOVStep;
         target = Mathf.Clamp(target, Mathf.Min(m_minFOV, m_maxFOV), Mathf.Max(m_minFOV, m_maxFOV));
         m_camera.DOFieldOfView(target, Mathf.Abs(stepCount * m_FOVStepTime));
+    }
+
+    Vector2 getPhotoLocation()
+    {
+        Plane p = new Plane(map.up, map.position);
+        float d = 0;
+        Ray r = new Ray(m_camera.transform.position, m_camera.transform.forward);
+        bool ok = p.Raycast(r, out d);
+        if (!ok)
+            return new Vector2(-10000, -10000);
+        var point = r.origin + r.direction * d;
+        point.Scale(new Vector3(1/map.localScale.x, 1/map.localScale.y, 1/map.localScale.z));
+        point /= 2.0f;
+
+        return new Vector2(point.x, point.z);
     }
 }
