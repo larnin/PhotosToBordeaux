@@ -152,7 +152,7 @@ public class ScoreLogic : MonoBehaviour
         foreach(var p in photos)
             lambda(p.name + " :", p.score);
 
-        lambda("Photos restantantes (" + (CameraLogic.maxPhotoCount - CameraLogic.photos.Count) + ") :", photoNotTakenScore);
+        lambda("Photos restantes (" + (CameraLogic.maxPhotoCount - CameraLogic.photos.Count) + ") :", photoNotTakenScore);
 
         int min = Mathf.FloorToInt(LevelMap.instance.time / 60);
         int s = Mathf.FloorToInt(LevelMap.instance.time - min * 60);

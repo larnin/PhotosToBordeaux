@@ -445,7 +445,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Arriv\xE9 \xE0 Bordeaux"
+  m_Text: "Arriv\xE9e \xE0 Bordeaux"
 --- !u!222 &708029592
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -563,10 +563,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Utilisez les touches fl\xE9ch\xE9 pour controler l'avion.\n\nCliquez sur
-    les \xE9l\xE9ments pour interagir avec.\nUtilisez le levier pour reposer l'appareil
-    photo.\n\nVotre objectif est d'arriver \xE0 bordeaux, en entier, en ayant pris
-    une photo des objets important de la map."
+  m_Text: "Utilisez les touches fl\xE9ch\xE9es pour contr\xF4ler l'avion.\n\nCliquez
+    sur les \xE9l\xE9ments pour interagir avec eux.\nUtilisez le levier pour reposer
+    l'appareil photo.\n\nVotre objectif est d'arriver \xE0 Bordeaux, en entier, en
+    ayant pris une photo des objets importants de la map."
 --- !u!222 &1003125450
 CanvasRenderer:
   m_ObjectHideFlags: 0

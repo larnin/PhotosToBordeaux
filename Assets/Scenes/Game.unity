@@ -3846,7 +3846,7 @@ MonoBehaviour:
   - name: Arbre remarquable
     prefab: {fileID: 1765237675023886, guid: 9762fdfa7c9ba58428153ae72c595ecd, type: 2}
     biome: 4
-  - name: Chateau de sable
+  - name: "Ch\xE2teau de sable"
     prefab: {fileID: 1057281647425414, guid: 68ec4c0f091880e4cb0fdefc1f226118, type: 2}
     biome: 2
   - name: "Cr\xE9ature"
@@ -3861,7 +3861,7 @@ MonoBehaviour:
   - name: "Rocher \xE9trange"
     prefab: {fileID: 1368515228575786, guid: e073a1035abe760459dd8ab4a06681af, type: 2}
     biome: 0
-  - name: Tour eiffel
+  - name: Tour Eiffel
     prefab: {fileID: 1672829127952056, guid: 8817071fa0780b941a9778bf43677a9c, type: 2}
     biome: 3
   m_bordeauxPrefab: {fileID: 1378857499501012, guid: f32dc520b4b785344a6abe0b00ca1cd9,
