@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogColor: {r: 0.38039216, g: 0.54509807, b: 0.8, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -1044,12 +1044,12 @@ Prefab:
     - target: {fileID: 114982789784766640, guid: a0274a0ec0d26b147886745e4a3885fd,
         type: 2}
       propertyPath: m_minHeight
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114982789784766640, guid: a0274a0ec0d26b147886745e4a3885fd,
         type: 2}
       propertyPath: m_maxHeight
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
         type: 2}
@@ -1060,6 +1060,26 @@ Prefab:
         type: 2}
       propertyPath: m_speed
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_ClearFlags
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_BackGroundColor.r
+      value: 0.38203096
+      objectReference: {fileID: 0}
+    - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_BackGroundColor.g
+      value: 0.54530823
+      objectReference: {fileID: 0}
+    - target: {fileID: 20934036127332004, guid: a0274a0ec0d26b147886745e4a3885fd,
+        type: 2}
+      propertyPath: m_BackGroundColor.b
+      value: 0.8018868
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a0274a0ec0d26b147886745e4a3885fd, type: 2}
@@ -3823,22 +3843,28 @@ MonoBehaviour:
       m_interCornerObj:
       - {fileID: 1136395913336030, guid: 6252007d1a9f0b24da09f5b9d2e7520e, type: 2}
   m_importantPoints:
-  - name: SeaBloc
-    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
-    biome: 0
-  - name: WaterSponge
-    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
-    biome: 1
-  - name: SandObject
-    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
-    biome: 2
-  - name: LandBloc
-    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
-    biome: 3
-  - name: ForestWhiteBloc
-    prefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce, type: 2}
+  - name: Arbre remarquable
+    prefab: {fileID: 1765237675023886, guid: 9762fdfa7c9ba58428153ae72c595ecd, type: 2}
     biome: 4
-  m_bordeauxPrefab: {fileID: 1791517944243828, guid: c567bb74eaef3d84ca97a446e87439ce,
+  - name: Chateau de sable
+    prefab: {fileID: 1057281647425414, guid: 68ec4c0f091880e4cb0fdefc1f226118, type: 2}
+    biome: 2
+  - name: "Cr\xE9ature"
+    prefab: {fileID: 1840334380698616, guid: 62be4819eb1615546a658db03d68b601, type: 2}
+    biome: 4
+  - name: Ile paradisiaque
+    prefab: {fileID: 1877251465319726, guid: e9d1527a86d4c4147a24f938c675ce19, type: 2}
+    biome: 0
+  - name: Flamant rose
+    prefab: {fileID: 1175071563045326, guid: 146fd271ee9725040bd318e860c7cbe1, type: 2}
+    biome: 1
+  - name: "Rocher \xE9trange"
+    prefab: {fileID: 1368515228575786, guid: e073a1035abe760459dd8ab4a06681af, type: 2}
+    biome: 0
+  - name: Tour eiffel
+    prefab: {fileID: 1672829127952056, guid: 8817071fa0780b941a9778bf43677a9c, type: 2}
+    biome: 3
+  m_bordeauxPrefab: {fileID: 1378857499501012, guid: f32dc520b4b785344a6abe0b00ca1cd9,
     type: 2}
   m_colors:
     seaColor: {r: 0, g: 0.63529414, b: 0.909804, a: 0}

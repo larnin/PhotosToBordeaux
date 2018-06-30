@@ -635,7 +635,7 @@ MonoBehaviour:
   m_minScorePhoto: 100
   m_scorePhotoNotTaken: 10
   m_maxPhotoDistance: 5
-  m_baseTime: 60
+  m_baseTime: 90
   m_baseTimeScore: 1000
 --- !u!114 &1603815041
 MonoBehaviour:
