@@ -165,7 +165,8 @@ public class GeneratorLogic : MonoBehaviour
         var elevation = generateElevation(generator);
         var tiles = generateBiomes(elevation, generator);
 
-        draw(tiles, generator);
+        if (!LevelMap.instance.canUseInstancing)
+            draw(tiles, generator);
 
         LevelMap.instance.tiles = tiles;
 

@@ -10,10 +10,16 @@ public class MainMenuLogic : MonoBehaviour
     [SerializeField] InputField m_seed;
     [SerializeField] string m_gameScene;
 
+    GameObject instancingMessage;
+
     private void Start()
     {
         m_howToPlay.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
+
+        LevelMap.instance.canUseInstancing = SystemInfo.supportsInstancing;
+        instancingMessage = transform.Find("Instancing").gameObject;
+        instancingMessage.SetActive(!LevelMap.instance.canUseInstancing);
     }
 
     public void onPlayPress()

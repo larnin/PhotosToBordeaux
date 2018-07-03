@@ -41,4 +41,5 @@ public class LevelMap
     public Texture2D minimap;
     public float time;
     public int seed;
+    public bool canUseInstancing = false;
 }
